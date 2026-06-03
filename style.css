@@ -48,3 +48,26 @@ body {
   flex: 1;
   padding: 20px;
 }
+
+/* INPUT */
+input {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  margin: 5px;
+}
+
+/* BUTTON */
+button {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  cursor: pointer;
+}
+
+/* LIST */
+ul {
+  margin-top: 10px;
+}
