@@ -1,10 +1,16 @@
-function Navbar() {
+function Navbar(user) {
   return `
     <div class="navbar">
       <div class="logo">⚡ JAHCORE</div>
+
       <div>
-        <button>Login</button>
-        <button>Register</button>
+        ${
+          user
+            ? `<span>👤 ${user}</span> <button onclick="logout()">Logout</button>`
+            : `<input id="userInput" placeholder="username" />
+               <button onclick="register(document.getElementById('userInput').value)">Register</button>
+               <button onclick="login(document.getElementById('userInput').value)">Login</button>`
+        }
       </div>
     </div>
   `;
@@ -21,13 +27,24 @@ function Sidebar() {
   `;
 }
 
-document.getElementById("app").innerHTML = `
-  ${Navbar()}
-  <div class="container">
-    ${Sidebar()}
-    <div class="content">
-      <h1>Welcome to JAHCORE 🚀</h1>
-      <p>Stage 1: Base system is running.</p>
+function loadUser() {
+  const user = localStorage.getItem("jahcore_user");
+
+  document.getElementById("app").innerHTML = `
+    ${Navbar(user)}
+    <div class="container">
+      ${Sidebar()}
+      <div class="content">
+        <h1>Welcome to JAHCORE 🚀</h1>
+        <p>${user ? "Logged in as: " + user : "You are not logged in"}</p>
+      </div>
     </div>
-  </div>
-`;
+  `;
+}
+
+// global
+window.register = register;
+window.login = login;
+window.logout = logout;
+
+loadUser();
