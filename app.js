@@ -6,10 +6,21 @@ function Navbar(user) {
       <div>
         ${
           user
-            ? `<span>👤 ${user}</span> <button onclick="logout()">Logout</button>`
-            : `<input id="userInput" placeholder="username" />
-               <button onclick="register(document.getElementById('userInput').value)">Register</button>
-               <button onclick="login(document.getElementById('userInput').value)">Login</button>`
+            ? `<span>👤 ${user.email}</span> <button onclick="logout()">Logout</button>`
+            : `
+              <input id="email" placeholder="email" />
+              <input id="pass" type="password" placeholder="password" />
+
+              <button onclick="register(
+                document.getElementById('email').value,
+                document.getElementById('pass').value
+              )">Register</button>
+
+              <button onclick="login(
+                document.getElementById('email').value,
+                document.getElementById('pass').value
+              )">Login</button>
+            `
         }
       </div>
     </div>
@@ -30,7 +41,7 @@ function Sidebar() {
 function LibraryUI() {
   return `
     <div>
-      <h2>📚 Library</h2>
+      <h2>📚 Library (Firebase)</h2>
 
       <input id="bookTitle" placeholder="Book title..." />
       <button onclick="addBook()">Add Book</button>
@@ -40,66 +51,60 @@ function LibraryUI() {
   `;
 }
 
+/* ================= FIREBASE AUTH ================= */
+
+function register(email, password) {
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(() => loadUser())
+    .catch(e => alert(e.message));
+}
+
+function login(email, password) {
+  auth.signInWithEmailAndPassword(email, password)
+    .then(() => loadUser())
+    .catch(e => alert(e.message));
+}
+
+function logout() {
+  auth.signOut().then(() => loadUser());
+}
+
 function getUser() {
-  return localStorage.getItem("jahcore_user");
+  return auth.currentUser;
 }
 
-function getBooks() {
-  const user = getUser();
-  if (!user) return [];
-
-  const data = localStorage.getItem("books_" + user);
-  return data ? JSON.parse(data) : [];
-}
-
-function saveBooks(books) {
-  const user = getUser();
-  localStorage.setItem("books_" + user, JSON.stringify(books));
-}
+/* ================= FIRESTORE BOOKS ================= */
 
 function addBook() {
   const user = getUser();
-  if (!user) return alert("Login first");
-
   const title = document.getElementById("bookTitle").value;
+
+  if (!user) return alert("Login first");
   if (!title) return alert("Enter book title");
 
-  const books = getBooks();
-  books.push({ title });
+  db.collection("books").add({
+    title: title,
+    uid: user.uid
+  });
 
-  saveBooks(books);
   renderBooks();
 }
 
 function renderBooks() {
-  const books = getBooks();
+  const user = getUser();
+  if (!user) return;
 
-  document.getElementById("bookList").innerHTML =
-    books.map(b => `<li>📘 ${b.title}</li>`).join("") ||
-    "<p>No books yet</p>";
+  db.collection("books")
+    .where("uid", "==", user.uid)
+    .onSnapshot(snapshot => {
+      const books = snapshot.docs.map(doc => doc.data());
+
+      document.getElementById("bookList").innerHTML =
+        books.map(b => `<li>📘 ${b.title}</li>`).join("");
+    });
 }
 
-function register(username) {
-  if (!username) return alert("Enter username");
-
-  localStorage.setItem("jahcore_user", username);
-  loadUser();
-}
-
-function login(username) {
-  const saved = localStorage.getItem("jahcore_user");
-
-  if (username === saved) {
-    loadUser();
-  } else {
-    alert("User not found");
-  }
-}
-
-function logout() {
-  localStorage.removeItem("jahcore_user");
-  loadUser();
-}
+/* ================= MAIN APP ================= */
 
 function loadUser() {
   const user = getUser();
@@ -110,7 +115,7 @@ function loadUser() {
       ${Sidebar()}
       <div class="content">
         <h1>Welcome to JAHCORE 🚀</h1>
-        <p>${user ? "Logged in as: " + user : "You are not logged in"}</p>
+        <p>${user ? "Logged in as: " + user.email : "You are not logged in"}</p>
 
         ${user ? LibraryUI() : "<p>Please login to use Library</p>"}
       </div>
@@ -120,7 +125,7 @@ function loadUser() {
   if (user) renderBooks();
 }
 
-// global functions
-window.addBook = addBook;
-
-loadUser();
+/* AUTO LOGIN */
+firebase.auth().onAuthStateChanged(user => {
+  loadUser();
+});
