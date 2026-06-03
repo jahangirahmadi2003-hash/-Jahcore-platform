@@ -40,8 +40,69 @@ function LibraryUI() {
   `;
 }
 
+function getUser() {
+  return localStorage.getItem("jahcore_user");
+}
+
+function getBooks() {
+  const user = getUser();
+  if (!user) return [];
+
+  const data = localStorage.getItem("books_" + user);
+  return data ? JSON.parse(data) : [];
+}
+
+function saveBooks(books) {
+  const user = getUser();
+  localStorage.setItem("books_" + user, JSON.stringify(books));
+}
+
+function addBook() {
+  const user = getUser();
+  if (!user) return alert("Login first");
+
+  const title = document.getElementById("bookTitle").value;
+  if (!title) return alert("Enter book title");
+
+  const books = getBooks();
+  books.push({ title });
+
+  saveBooks(books);
+  renderBooks();
+}
+
+function renderBooks() {
+  const books = getBooks();
+
+  document.getElementById("bookList").innerHTML =
+    books.map(b => `<li>📘 ${b.title}</li>`).join("") ||
+    "<p>No books yet</p>";
+}
+
+function register(username) {
+  if (!username) return alert("Enter username");
+
+  localStorage.setItem("jahcore_user", username);
+  loadUser();
+}
+
+function login(username) {
+  const saved = localStorage.getItem("jahcore_user");
+
+  if (username === saved) {
+    loadUser();
+  } else {
+    alert("User not found");
+  }
+}
+
+function logout() {
+  localStorage.removeItem("jahcore_user");
+  loadUser();
+}
+
 function loadUser() {
-  const user = localStorage.getItem("jahcore_user");
+  const user = getUser();
 
   document.getElementById("app").innerHTML = `
     ${Navbar(user)}
@@ -59,28 +120,7 @@ function loadUser() {
   if (user) renderBooks();
 }
 
-// auth functions from previous step
-function register(username) {
-  if (!username) return alert("Enter username");
-  localStorage.setItem("jahcore_user", username);
-  loadUser();
-}
-
-function login(username) {
-  const saved = localStorage.getItem("jahcore_user");
-  if (username === saved) {
-    loadUser();
-  } else {
-    alert("User not found");
-  }
-}
-
-function logout() {
-  localStorage.removeItem("jahcore_user");
-  loadUser();
-}
-
-// global access
+// global functions
 window.addBook = addBook;
 
 loadUser();
