@@ -1,73 +1,41 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0f172a;
+  font-family: Arial;
+  background: #0b1220;
   color: white;
 }
 
-/* NAVBAR */
-.navbar {
-  height: 60px;
-  background: #111827;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-}
-
-.logo {
-  color: #3b82f6;
-  font-weight: bold;
-}
-
-/* LAYOUT */
+/* کل صفحه */
 .container {
-  display: flex;
-  height: calc(100vh - 60px);
-}
-
-/* SIDEBAR */
-.sidebar {
-  width: 220px;
-  background: #111827;
-  padding: 10px;
-}
-
-.sidebar div {
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 6px;
-}
-
-.sidebar div:hover {
-  background: #1f2937;
-}
-
-/* CONTENT */
-.content {
-  flex: 1;
   padding: 20px;
 }
 
-/* INPUT */
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: #111a2e;
+}
+
+/* دکمه‌ها */
+button {
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #2d6cff;
+  color: white;
+}
+
+/* ورودی‌ها */
 input {
   padding: 8px;
-  border-radius: 6px;
-  border: none;
   margin: 5px;
 }
 
-/* BUTTON */
-button {
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: none;
-  background: #3b82f6;
-  color: white;
-  cursor: pointer;
-}
-
-/* LIST */
-ul {
-  margin-top: 10px;
+/* جلوگیری از بهم ریختگی موبایل */
+* {
+  box-sizing: border-box;
 }
