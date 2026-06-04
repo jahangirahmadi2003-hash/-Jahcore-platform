@@ -1,6 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyDrbEyAFk_hJmBdU1GIaUTW5mZWCL4vXrM",
   authDomain: "jahcore-e8653.firebaseapp.com",
@@ -11,24 +8,25 @@ const firebaseConfig = {
   appId: "1:869095509266:web:1e3ba92bfc3a01ac1e77cb"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+// init firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
 // UI
 document.getElementById("app").innerHTML = `
-  <div>
+  <div style="font-family:Arial; padding:20px">
     <h1>⚡ JAHCORE</h1>
 
     <button id="addBookBtn">➕ Add Book</button>
 
-    <h2>📚 Books</h2>
+    <h2>📚 Library</h2>
     <div id="books">Loading...</div>
   </div>
 `;
 
 // add book
 document.getElementById("addBookBtn").onclick = () => {
-  set(ref(db, "books/1"), {
+  db.ref("books/1").set({
     title: "First Book",
     author: "JAHCORE",
     price: 0
@@ -36,9 +34,7 @@ document.getElementById("addBookBtn").onclick = () => {
 };
 
 // load books
-const booksRef = ref(db, "books");
-
-onValue(booksRef, (snapshot) => {
+db.ref("books").on("value", (snapshot) => {
   const data = snapshot.val();
 
   let html = "";
@@ -46,14 +42,15 @@ onValue(booksRef, (snapshot) => {
   if (data) {
     for (let id in data) {
       html += `
-        <div>
+        <div style="border:1px solid #ccc; margin:10px; padding:10px;">
           <h3>${data[id].title}</h3>
           <p>${data[id].author}</p>
+          <p>💰 ${data[id].price}</p>
         </div>
       `;
     }
   } else {
-    html = "No books";
+    html = "<p>No books yet</p>";
   }
 
   document.getElementById("books").innerHTML = html;
