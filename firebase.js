@@ -1,14 +1,17 @@
+import { initializeApp } from "firebase/app";
+import { getDatabase } from "firebase/database";
+
 const firebaseConfig = {
-  apiKey: "AIzaSyAl3Nsp-4pqPGDa6RlM09UQeAchi8sHw",
-  authDomain: "jahcore-ea0a1.firebaseapp.com",
-  projectId: "jahcore-ea0a1",
-  storageBucket: "jahcore-ea0a1.appspot.com",
-  messagingSenderId: "187339185098",
-  appId: "1:187339185098:web:3c94026a0dc1fd15120d33",
-  measurementId: "G-MLHSVSCKMM"
+  apiKey: "AIzaSyDrbEyAFk_hJmBdU1GIaUTW5mZWCL4vXrM",
+  authDomain: "jahcore-e8653.firebaseapp.com",
+  databaseURL: "https://jahcore-e8653-default-rtdb.firebaseio.com",
+  projectId: "jahcore-e8653",
+  storageBucket: "jahcore-e8653.appspot.com",
+  messagingSenderId: "869095509266",
+  appId: "1:869095509266:web:1e3ba92bfc3a01ac1e77cb"
 };
 
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-const auth = firebase.auth();
-const db = firebase.firestore();
+// اتصال به Realtime Database
+export const db = getDatabase(app);
