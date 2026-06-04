@@ -1,41 +1,176 @@
-body {
+/* =========================
+   JAHCORE GLOBAL STYLE
+========================= */
+
+* {
   margin: 0;
-  font-family: Arial;
-  background: #0b1220;
-  color: white;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-/* کل صفحه */
+body {
+  background: #0f1115;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
 .container {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
   padding: 20px;
 }
 
-/* Navbar */
+/* =========================
+   NAVBAR
+========================= */
+
 .navbar {
+  width: 100%;
+  height: 60px;
+  background: #151922;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 15px;
-  background: #111a2e;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-bottom: 1px solid #2a2f3a;
 }
 
-/* دکمه‌ها */
-button {
-  margin: 5px;
-  padding: 8px 12px;
+.navbar .logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #00ffcc;
+}
+
+.navbar .menu {
+  display: flex;
+  gap: 15px;
+}
+
+.navbar .menu a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.navbar .menu a:hover {
+  opacity: 1;
+  color: #00ffcc;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn {
+  padding: 10px 15px;
   border: none;
-  border-radius: 6px;
-  background: #2d6cff;
-  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #00ffcc;
+  color: #000;
+  font-weight: bold;
+  transition: 0.2s;
 }
 
-/* ورودی‌ها */
-input {
-  padding: 8px;
-  margin: 5px;
+.btn:hover {
+  transform: scale(1.05);
 }
 
-/* جلوگیری از بهم ریختگی موبایل */
-* {
-  box-sizing: border-box;
+.btn-dark {
+  background: #2a2f3a;
+  color: #fff;
 }
+
+/* =========================
+   CARDS (BOOK / CONTENT)
+========================= */
+
+.card {
+  background: #1a1f2a;
+  border: 1px solid #2a2f3a;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 10px 0;
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: #00ffcc;
+}
+
+/* کتاب */
+.book-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.book-desc {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* =========================
+   GRID (LIBRARY)
+========================= */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #2a2f3a;
+  background: #151922;
+  color: #fff;
+  outline: none;
+}
+
+input:focus {
+  border-color: #00ffcc;
+}
+
+/* =========================
+   LOGIN BOX
+========================= */
+
+.auth-box {
+  width: 350px;
+  margin: 80px auto;
+  padding: 20px;
+  background: #1a1f2a;
+  border-radius: 12px;
+  border: 1px solid #2a2f3a;
+}
+
+/* =========================
+   UTILITIES
+========================= */
+
+.text-center {
+  text-align: center;
+}
+
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+
+.hidden {
+  display: none;
+  }
