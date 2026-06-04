@@ -1,7 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, onValue } from "firebase/database";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyDrbEyAFk_hJmBdU1GIaUTW5mZWCL4vXrM",
   authDomain: "jahcore-e8653.firebaseapp.com",
@@ -12,36 +11,22 @@ const firebaseConfig = {
   appId: "1:869095509266:web:1e3ba92bfc3a01ac1e77cb"
 };
 
-// Init Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // UI
 document.getElementById("app").innerHTML = `
-  <div class="container">
+  <div>
     <h1>⚡ JAHCORE</h1>
 
-    <p>AI • Library • News • Marketplace • Wallet</p>
+    <button id="addBookBtn">➕ Add Book</button>
 
-    <button id="addBookBtn">➕ Add Test Book</button>
-
-    <hr>
-
-    <h2>📚 Digital Library</h2>
-    <div id="books">Loading books...</div>
-
-    <h2>📰 News</h2>
-    <p>Latest global news.</p>
-
-    <h2>🛒 Marketplace</h2>
-    <p>Buy and sell digital products.</p>
-
-    <h2>💳 Wallet</h2>
-    <p>Manage your balance.</p>
+    <h2>📚 Books</h2>
+    <div id="books">Loading...</div>
   </div>
 `;
 
-// Add test book
+// add book
 document.getElementById("addBookBtn").onclick = () => {
   set(ref(db, "books/1"), {
     title: "First Book",
@@ -50,7 +35,7 @@ document.getElementById("addBookBtn").onclick = () => {
   });
 };
 
-// Load books realtime
+// load books
 const booksRef = ref(db, "books");
 
 onValue(booksRef, (snapshot) => {
@@ -61,15 +46,14 @@ onValue(booksRef, (snapshot) => {
   if (data) {
     for (let id in data) {
       html += `
-        <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <div>
           <h3>${data[id].title}</h3>
           <p>${data[id].author}</p>
-          <p>💰 ${data[id].price}</p>
         </div>
       `;
     }
   } else {
-    html = "<p>No books found</p>";
+    html = "No books";
   }
 
   document.getElementById("books").innerHTML = html;
