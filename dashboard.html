@@ -69,6 +69,19 @@ margin-bottom:25px;
 .welcome{
 font-size:22px;
 font-weight:bold;
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+/* SETTINGS QUICK BUTTON */
+.topbar a{
+background:#2563eb;
+padding:8px 12px;
+border-radius:8px;
+text-decoration:none;
+color:white;
+font-size:13px;
 }
 
 /* CARDS */
@@ -115,16 +128,6 @@ border:none;
 border-radius:8px;
 cursor:pointer;
 }
-
-/* PROFILE BUTTON */
-.profile-btn{
-background:#2563eb;
-padding:8px 12px;
-border-radius:8px;
-text-decoration:none;
-color:white;
-font-size:13px;
-}
 </style>
 
 </head>
@@ -146,6 +149,9 @@ font-size:13px;
 <!-- NEW -->
 <a href="profile.html"><i class="fas fa-user"></i> پروفایل</a>
 
+<!-- ⚙ SETTINGS ADDED -->
+<a href="settings.html"><i class="fas fa-cog"></i> تنظیمات</a>
+
 <a href="#"><i class="fas fa-bullhorn"></i> تبلیغات</a>
 <a href="#"><i class="fas fa-newspaper"></i> اخبار</a>
 
@@ -159,10 +165,14 @@ font-size:13px;
 <div class="main">
 
 <div class="topbar">
-<div class="welcome" id="welcome">در حال بارگذاری...</div>
 
-<!-- NEW QUICK PROFILE BUTTON -->
-<a class="profile-btn" href="profile.html">👤 ویرایش پروفایل</a>
+<div class="welcome">
+👋 <span id="welcome">در حال بارگذاری...</span>
+</div>
+
+<!-- QUICK SETTINGS BUTTON -->
+<a href="settings.html">⚙ تنظیمات</a>
+
 </div>
 
 <!-- CARDS -->
@@ -276,4 +286,4 @@ window.location.href="login.html";
 </script>
 
 </body>
-  </html>
+</html>
