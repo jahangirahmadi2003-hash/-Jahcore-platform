@@ -101,7 +101,6 @@ border-radius:14px;
 margin-top:10px;
 }
 
-/* EMPTY STATE */
 .empty{
 text-align:center;
 color:#9ca3af;
@@ -116,6 +115,16 @@ border:none;
 border-radius:8px;
 cursor:pointer;
 }
+
+/* PROFILE BUTTON */
+.profile-btn{
+background:#2563eb;
+padding:8px 12px;
+border-radius:8px;
+text-decoration:none;
+color:white;
+font-size:13px;
+}
 </style>
 
 </head>
@@ -128,13 +137,20 @@ cursor:pointer;
 <div class="logo">⚡ JAHCORE</div>
 
 <div class="menu">
+
 <a href="#"><i class="fas fa-home"></i> خانه</a>
 <a href="library.html"><i class="fas fa-book"></i> کتابخانه</a>
 <a href="wallet.html"><i class="fas fa-wallet"></i> کیف پول</a>
 <a href="ai.html"><i class="fas fa-robot"></i> هوش مصنوعی</a>
+
+<!-- NEW -->
+<a href="profile.html"><i class="fas fa-user"></i> پروفایل</a>
+
 <a href="#"><i class="fas fa-bullhorn"></i> تبلیغات</a>
 <a href="#"><i class="fas fa-newspaper"></i> اخبار</a>
+
 <a href="#" onclick="logout()"><i class="fas fa-sign-out"></i> خروج</a>
+
 </div>
 
 </div>
@@ -144,6 +160,9 @@ cursor:pointer;
 
 <div class="topbar">
 <div class="welcome" id="welcome">در حال بارگذاری...</div>
+
+<!-- NEW QUICK PROFILE BUTTON -->
+<a class="profile-btn" href="profile.html">👤 ویرایش پروفایل</a>
 </div>
 
 <!-- CARDS -->
@@ -160,13 +179,13 @@ cursor:pointer;
 </div>
 
 <div class="card">
-<h2>VIP</h2>
-<p>وضعیت حساب</p>
+<h2 id="usernameCard">-</h2>
+<p>کاربر</p>
 </div>
 
 <div class="card">
-<h2>0</h2>
-<p>دنبال‌کننده</p>
+<h2>VIP</h2>
+<p>وضعیت حساب</p>
 </div>
 
 </div>
@@ -204,6 +223,9 @@ let data = snap.data() || {};
 document.getElementById("welcome").innerText =
 "سلام " + (data.username || "کاربر");
 
+document.getElementById("usernameCard").innerText =
+data.username || "-";
+
 /* WALLET */
 document.getElementById("balance").innerText =
 (data.wallet || 0) + "$";
@@ -219,9 +241,10 @@ booksSnap.size;
 let html = "";
 
 if(booksSnap.empty){
-html = `<div class="empty">
+html = `
+<div class="empty">
 📭 هنوز کتابی نداری<br><br>
-<a href="library.html" style="color:#60a5fa">افزودن کتاب</a>
+<a href="library.html" style="color:#60a5fa">➕ افزودن کتاب</a>
 </div>`;
 }else{
 
