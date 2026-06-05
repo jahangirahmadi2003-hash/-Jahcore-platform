@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JAHCORE Dashboard Pro</title>
+<title>JAHCORE Dashboard</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
@@ -16,7 +16,6 @@ color:white;
 display:flex;
 }
 
-/* SIDEBAR */
 .sidebar{
 width:270px;
 height:100vh;
@@ -25,7 +24,6 @@ position:fixed;
 right:0;
 top:0;
 padding:20px;
-border-left:1px solid #1f2937;
 }
 
 .logo{
@@ -36,7 +34,6 @@ margin-bottom:25px;
 
 .menu a{
 display:flex;
-align-items:center;
 gap:10px;
 padding:12px;
 margin:8px 0;
@@ -44,47 +41,25 @@ text-decoration:none;
 color:white;
 background:#111827;
 border-radius:10px;
-transition:0.2s;
 }
 
 .menu a:hover{
 background:#2563eb;
 }
 
-/* MAIN */
 .main{
 margin-right:270px;
 padding:25px;
 width:100%;
 }
 
-/* HEADER */
 .topbar{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:25px;
+margin-bottom:20px;
 }
 
-.welcome{
-font-size:22px;
-font-weight:bold;
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-/* SETTINGS QUICK BUTTON */
-.topbar a{
-background:#2563eb;
-padding:8px 12px;
-border-radius:8px;
-text-decoration:none;
-color:white;
-font-size:13px;
-}
-
-/* CARDS */
 .cards{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -98,20 +73,18 @@ border-radius:14px;
 }
 
 .card h2{
-margin:0;
 color:#60a5fa;
+margin:0;
 }
 
-/* SECTION */
 .section{
 margin-top:30px;
 }
 
 .box{
 background:#111827;
-padding:18px;
-border-radius:14px;
-margin-top:10px;
+padding:15px;
+border-radius:12px;
 }
 
 .empty{
@@ -123,13 +96,12 @@ padding:20px;
 button{
 background:#ef4444;
 color:white;
-padding:8px 12px;
 border:none;
+padding:6px 10px;
 border-radius:8px;
 cursor:pointer;
 }
 </style>
-
 </head>
 
 <body>
@@ -140,23 +112,11 @@ cursor:pointer;
 <div class="logo">⚡ JAHCORE</div>
 
 <div class="menu">
-
 <a href="#"><i class="fas fa-home"></i> خانه</a>
 <a href="library.html"><i class="fas fa-book"></i> کتابخانه</a>
 <a href="wallet.html"><i class="fas fa-wallet"></i> کیف پول</a>
-<a href="ai.html"><i class="fas fa-robot"></i> هوش مصنوعی</a>
-
-<!-- NEW -->
-<a href="profile.html"><i class="fas fa-user"></i> پروفایل</a>
-
-<!-- ⚙ SETTINGS ADDED -->
 <a href="settings.html"><i class="fas fa-cog"></i> تنظیمات</a>
-
-<a href="#"><i class="fas fa-bullhorn"></i> تبلیغات</a>
-<a href="#"><i class="fas fa-newspaper"></i> اخبار</a>
-
 <a href="#" onclick="logout()"><i class="fas fa-sign-out"></i> خروج</a>
-
 </div>
 
 </div>
@@ -165,14 +125,7 @@ cursor:pointer;
 <div class="main">
 
 <div class="topbar">
-
-<div class="welcome">
-👋 <span id="welcome">در حال بارگذاری...</span>
-</div>
-
-<!-- QUICK SETTINGS BUTTON -->
-<a href="settings.html">⚙ تنظیمات</a>
-
+<h2 id="welcome">...</h2>
 </div>
 
 <!-- CARDS -->
@@ -189,25 +142,22 @@ cursor:pointer;
 </div>
 
 <div class="card">
-<h2 id="usernameCard">-</h2>
+<h2 id="username">-</h2>
 <p>کاربر</p>
 </div>
 
-<div class="card">
-<h2>VIP</h2>
-<p>وضعیت حساب</p>
 </div>
 
+<!-- WALLET -->
+<div class="section">
+<h3>💰 کیف پول</h3>
+<div class="box" id="walletBox">...</div>
 </div>
 
 <!-- LIBRARY -->
 <div class="section">
 <h3>📚 کتابخانه من</h3>
-
-<div class="box" id="library">
-در حال بارگذاری...
-</div>
-
+<div class="box" id="library">در حال بارگذاری...</div>
 </div>
 
 </div>
@@ -233,19 +183,22 @@ let data = snap.data() || {};
 document.getElementById("welcome").innerText =
 "سلام " + (data.username || "کاربر");
 
-document.getElementById("usernameCard").innerText =
+document.getElementById("username").innerText =
 data.username || "-";
 
 /* WALLET */
-document.getElementById("balance").innerText =
-(data.wallet || 0) + "$";
+let wallet = data.wallet || 0;
+document.getElementById("balance").innerText = wallet + "$";
+
+document.getElementById("walletBox").innerHTML = `
+💰 موجودی شما<br><h2 style="color:#60a5fa">${wallet} USD</h2>
+`;
 
 /* BOOKS */
 let q = query(collection(db,"books"), where("uid","==",user.uid));
 let booksSnap = await getDocs(q);
 
-document.getElementById("books").innerText =
-booksSnap.size;
+document.getElementById("books").innerText = booksSnap.size;
 
 /* LIBRARY */
 let html = "";
@@ -253,7 +206,7 @@ let html = "";
 if(booksSnap.empty){
 html = `
 <div class="empty">
-📭 هنوز کتابی نداری<br><br>
+📭 هنوز کتاب نداری<br><br>
 <a href="library.html" style="color:#60a5fa">➕ افزودن کتاب</a>
 </div>`;
 }else{
@@ -262,12 +215,10 @@ booksSnap.forEach((d)=>{
 let b = d.data();
 
 html += `
-<div style="background:#1f2937;padding:12px;border-radius:10px;margin-bottom:10px">
+<div style="margin-bottom:10px">
 <b>${b.title}</b><br>
-<small>${b.author}</small><br>
-<a href="reader.html?id=${d.id}" style="color:#60a5fa">
-📖 مطالعه
-</a>
+<small>${b.author || "نامشخص"}</small><br>
+<a href="reader.html?id=${d.id}" style="color:#60a5fa">📖 مطالعه</a>
 </div>
 `;
 });
