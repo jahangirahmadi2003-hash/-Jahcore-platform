@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAHCORE Reader</title>
+
+<style>
+body{
+margin:0;
+font-family:tahoma;
+background:#0b0f19;
+color:white;
+}
+
+.topbar{
+position:fixed;
+top:0;
+width:100%;
+background:#111827;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+z-index:10;
+}
+
+.container{
+max-width:800px;
+margin:auto;
+padding:100px 20px;
+line-height:2;
+font-size:18px;
+}
+
+button{
+padding:8px 15px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+background:#2563eb;
+color:white;
+}
+
+.dark{
+background:#f1f5f9;
+color:black;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="topbar">
+<div id="title">📖 کتاب</div>
+
+<div>
+<button onclick="toggleMode()">🌙 حالت</button>
+<button onclick="goBack()">⬅ برگشت</button>
+</div>
+</div>
+
+<div class="container" id="content">
+در حال بارگذاری...
+</div>
+
+<script type="module">
+
+import { db } from "./firebase.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+/* GET BOOK ID */
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+/* LOAD BOOK */
+async function loadBook(){
+
+let snap = await getDoc(doc(db,"books",id));
+
+if(!snap.exists()){
+document.getElementById("content").innerText = "کتاب پیدا نشد";
+return;
+}
+
+let book = snap.data();
+
+document.getElementById("title").innerText = book.title;
+
+document.getElementById("content").innerText =
+book.url || "محتوای کتاب موجود نیست (فعلاً فقط متن/لینک)";
+}
+
+loadBook();
+
+/* BACK */
+window.goBack = function(){
+window.history.back();
+}
+
+/* DARK MODE */
+window.toggleMode = function(){
+document.body.classList.toggle("dark");
+}
+
+</script>
+
+</body>
+</html>
