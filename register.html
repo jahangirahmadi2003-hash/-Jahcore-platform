@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>ثبت نام JAHCORE</title>
+</head>
+<body>
+
+<h2>ثبت نام</h2>
+
+<input id="username" placeholder="نام کاربری"><br><br>
+<input id="email" placeholder="ایمیل"><br><br>
+<input id="password" type="password" placeholder="رمز"><br><br>
+
+<button onclick="register()">ثبت نام</button>
+
+<p id="msg"></p>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+window.register = async function () {
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+  let username = document.getElementById("username").value;
+
+  try {
+    let userCred = await createUserWithEmailAndPassword(auth, email, password);
+
+    await setDoc(doc(db, "users", userCred.user.uid), {
+      uid: userCred.user.uid,
+      username: username,
+      email: email,
+      createdAt: new Date(),
+      wallet: 0
+    });
+
+    document.getElementById("msg").innerText = "ثبت نام موفق شد";
+    window.location.href = "dashboard.html";
+
+  } catch (err) {
+    document.getElementById("msg").innerText = err.message;
+  }
+}
+</script>
+
+</body>
+  </html>
