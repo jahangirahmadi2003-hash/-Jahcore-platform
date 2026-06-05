@@ -1,29 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>JAHCORE</title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- 🔥 ICON (favicon) -->
-  <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/96/artificial-intelligence.png">
-
+  <title>JAHCORE - پلتفرم چندمنظوره</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      background: rgba(15, 23, 42, 0.95);
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid #334155;
+    }
+    .logo {
+      font-size: 42px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .subtitle {
+      color: #60a5fa;
+      margin-top: 5px;
+    }
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      padding: 20px;
+      background: #1e2937;
+    }
+    .nav button {
+      padding: 14px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .card {
+      background: #1e2937;
+      margin: 15px;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    button {
+      background: #3b82f6;
+      color: white;
+      width: 100%;
+      padding: 16px;
+      margin: 10px 0;
+      border-radius: 12px;
+      font-size: 17px;
+      border: none;
+    }
+    .green-btn { background: #22c55e; color: black; }
+    .wallet-btn { background: #eab308; color: black; font-weight: bold; }
+  </style>
 </head>
-
 <body>
 
-  <div id="app"></div>
+  <div class="header">
+    <h1 class="logo">⚡ JAHCORE</h1>
+    <p class="subtitle">پلتفرم چندمنظوره جهانی</p>
+  </div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <div class="nav">
+    <button onclick="location.href='index.html'">🏠 خانه</button>
+    <button onclick="location.href='library.html'">📚 کتابخانه</button>
+    <button onclick="location.href='wallet.html'">💰 کیف پول TON</button>
+    <button onclick="alert('بخش تبلیغات به زودی')">📢 تبلیغات</button>
+  </div>
 
-  <!-- App -->
-  <script src="app.js"></script>
+  <div class="card">
+    <h2>خوش آمدید به JAHCORE</h2>
+    <p>پلتفرم کامل برای تبلیغات، فروشگاه دیجیتال، کتاب، اخبار و کیف پول مستقل TON</p>
+  </div>
+
+  <div class="card">
+    <h2>🔥 امکانات اصلی</h2>
+    <ul style="padding-right:20px; line-height:2;">
+      <li>📚 کتابخانه دیجیتال</li>
+      <li>💰 کیف پول TON کاملاً مستقل (Non-Custodial)</li>
+      <li>📢 سیستم تبلیغات</li>
+      <li>🛒 فروشگاه دیجیتال</li>
+      <li>🎥 ساخت ویدیو</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <button class="wallet-btn" onclick="location.href='wallet.html'">
+      💰 ورود به کیف پول TON
+    </button>
+    <button onclick="location.href='library.html'">
+      📚 رفتن به کتابخانه
+    </button>
+  </div>
+
+  <p style="text-align:center; color:#64748b; padding:20px; font-size:14px;">
+    JAHCORE © 2026 - تمام حقوق محفوظ است
+  </p>
 
 </body>
-</html>
+    </html>
