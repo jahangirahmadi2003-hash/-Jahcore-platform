@@ -1,114 +1,413 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JAHCORE - پلتفرم چندمنظوره جهانی</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAHCORE</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:tahoma,sans-serif;
+}
+
+body{
+background:#0b0f19;
+color:white;
+}
+
+header{
+background:#111827;
+padding:20px 50px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:32px;
+font-weight:bold;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin:0 15px;
+}
+
+.btn{
+background:#2563eb;
+padding:12px 25px;
+border:none;
+border-radius:12px;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.hero{
+padding:120px 20px;
+text-align:center;
+}
+
+.hero h1{
+font-size:60px;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:24px;
+color:#cbd5e1;
+max-width:900px;
+margin:auto;
+margin-bottom:40px;
+}
+
+.hero-buttons{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.hero-btn{
+padding:18px 35px;
+border-radius:15px;
+font-size:18px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.primary{
+background:#facc15;
+color:black;
+}
+
+.secondary{
+background:#1f2937;
+color:white;
+}
+
+.stats{
+padding:80px 20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.stat-box{
+background:#111827;
+padding:30px;
+border-radius:20px;
+text-align:center;
+}
+
+.stat-box h2{
+font-size:40px;
+color:#60a5fa;
+}
+
+.section-title{
+text-align:center;
+font-size:42px;
+margin-bottom:50px;
+}
+
+.features{
+padding:100px 20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
+}
+
+.card{
+background:#111827;
+padding:30px;
+border-radius:20px;
+}
+
+.card i{
+font-size:45px;
+margin-bottom:15px;
+color:#60a5fa;
+}
+
+.card h3{
+margin-bottom:10px;
+}
+
+.books{
+padding:100px 20px;
+}
+
+.book-list{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.book{
+background:#111827;
+padding:25px;
+border-radius:15px;
+text-align:center;
+}
+
+.ai{
+padding:100px 20px;
+text-align:center;
+background:#111827;
+}
+
+.roadmap{
+padding:100px 20px;
+}
+
+.phase{
+background:#111827;
+padding:25px;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+.faq{
+padding:100px 20px;
+}
+
+.faq-item{
+background:#111827;
+padding:20px;
+border-radius:15px;
+margin-bottom:15px;
+}
+
+footer{
+background:black;
+padding:50px;
+text-align:center;
+color:#9ca3af;
+}
+
+footer h2{
+color:white;
+margin-bottom:10px;
+}
+</style>
+
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <span class="text-4xl">⚡</span>
-        <h1 class="text-3xl font-bold">JAHCORE</h1>
-      </div>
-      <nav class="hidden md:flex items-center gap-8 text-lg">
-        <a href="#" class="hover:text-blue-400">خانه</a>
-        <a href="library.html" class="hover:text-blue-400">کتابخانه</a>
-        <a href="wallet.html" class="hover:text-blue-400">کیف پول</a>
-        <a href="#" class="hover:text-blue-400">اخبار</a>
-        <a href="#" class="hover:text-blue-400">جامعه</a>
-      </nav>
-      <button onclick="alert('به زودی فعال می‌شود')" class="bg-white text-black px-8 py-3 rounded-2xl font-semibold hover:bg-gray-200">
-        ورود / ثبت‌نام
-      </button>
-    </div>
-  </header>
+<header>
 
-  <!-- Hero -->
-  <section class="hero text-center">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-6xl md:text-7xl font-bold leading-tight mb-6">
-        همه چیز در یک پلتفرم
-      </h2>
-      <p class="text-2xl text-gray-300 max-w-4xl mx-auto mb-12">
-        کتابخانه دیجیتال • کیف پول TON • تبلیغات هوشمند • هوش مصنوعی • شبکه اجتماعی • درآمدزایی
-      </p>
-      <div class="flex flex-wrap gap-5 justify-center">
-        <a href="wallet.html" class="bg-yellow-400 text-black px-10 py-5 rounded-3xl text-xl font-bold flex items-center gap-3">
-          <i class="fas fa-wallet"></i> کیف پول TON
-        </a>
-        <a href="library.html" class="bg-white/10 border border-white/30 px-10 py-5 rounded-3xl text-xl font-bold flex items-center gap-3">
-          <i class="fas fa-book"></i> کتابخانه
-        </a>
-      </div>
-    </div>
-  </section>
+<div class="logo">
+⚡ JAHCORE
+</div>
 
-  <!-- Features Grid -->
-  <section class="py-24 bg-gray-900">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-5xl font-bold text-center mb-20">قابلیت‌های JAHCORE</h2>
+<nav>
+<a href="#">خانه</a>
+<a href="#">کتابخانه</a>
+<a href="#">کیف پول</a>
+<a href="#">اخبار</a>
+<a href="#">جامعه</a>
+<a href="#">هوش مصنوعی</a>
+</nav>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<button class="btn">
+ورود / ثبت نام
+</button>
 
-        <div class="glass feature-card">
-          <div class="text-5xl mb-6">👤</div>
-          <h3 class="text-2xl font-bold mb-2">حساب کاربری و پروفایل</h3>
-          <p class="text-gray-400">ثبت‌نام • 2FA • پروفایل کامل • مدیریت دستگاه‌ها</p>
-        </div>
+</header>
 
-        <div class="glass feature-card">
-          <div class="text-5xl mb-6">📚</div>
-          <h3 class="text-2xl font-bold mb-2">کتابخانه دیجیتال</h3>
-          <p class="text-gray-400">انتشار • مطالعه آنلاین • فروش • پیشنهاد هوشمند</p>
-        </div>
+<section class="hero">
 
-        <div class="glass feature-card">
-          <div class="text-5xl mb-6">💰</div>
-          <h3 class="text-2xl font-bold mb-2">کیف پول TON</h3>
-          <p class="text-gray-400">Non-Custodial • واریز/برداشت • محدودیت هوشمند</p>
-        </div>
+<h1>همه چیز در یک پلتفرم</h1>
 
-        <div class="glass feature-card">
-          <div class="text-5xl mb-6">📢</div>
-          <h3 class="text-2xl font-bold mb-2">سیستم تبلیغات</h3>
-          <p class="text-gray-400">Native • ویدیویی • پنل تبلیغ‌دهنده • آمار کامل</p>
-        </div>
+<p>
+کتابخانه دیجیتال • کیف پول TON • تبلیغات هوشمند •
+هوش مصنوعی • اخبار • شبکه اجتماعی • درآمدزایی
+</p>
 
-        <div class="glass feature-card">
-          <div class="text-5xl mb-6">🤖</div>
-          <h3 class="text-2xl font-bold mb-2">هوش مصنوعی</h3>
-          <p class="text-gray-400">چت AI • خلاصه کتاب • تولید محتوا • پیشنهاد شخصی</p>
-        </div>
+<div class="hero-buttons">
+<a href="#" class="hero-btn primary">
+💰 کیف پول TON
+</a>
 
-        <div class="glass feature-card">
-          <div class="text-5xl mb-6">📰</div>
-          <h3 class="text-2xl font-bold mb-2">اخبار و شبکه اجتماعی</h3>
-          <p class="text-gray-400">پست • گروه • کانال • پیام‌رسانی • دنبال کردن</p>
-        </div>
+<a href="#" class="hero-btn secondary">
+📚 کتابخانه
+</a>
+</div>
 
-      </div>
-    </div>
-  </section>
+</section>
 
-  <!-- Call to Action -->
-  <section class="py-20 text-center bg-gradient-to-b from-gray-900 to-black">
-    <h2 class="text-4xl font-bold mb-6">آماده‌ای بخشی از آینده باشی؟</h2>
-    <button onclick="alert('ثبت‌نام به زودی فعال می‌شود')" 
-            class="bg-blue-600 hover:bg-blue-700 text-white text-2xl px-16 py-6 rounded-3xl font-bold">
-      همین حالا شروع کن
-    </button>
-  </section>
+<section class="stats">
 
-  <footer class="bg-black py-16 text-center text-gray-500">
-    <p class="text-3xl font-bold text-white mb-3">JAHCORE</p>
-    <p>2026 © پلتفرم مستقل • امن • کاربرمحور</p>
-  </footer>
+<div class="stat-box">
+<h2>1M+</h2>
+<p>کاربر</p>
+</div>
+
+<div class="stat-box">
+<h2>500K+</h2>
+<p>کتاب</p>
+</div>
+
+<div class="stat-box">
+<h2>10M+</h2>
+<p>تراکنش</p>
+</div>
+
+<div class="stat-box">
+<h2>100+</h2>
+<p>کشور</p>
+</div>
+
+</section>
+
+<section class="features">
+
+<h2 class="section-title">
+قابلیت های JAHCORE
+</h2>
+
+<div class="grid">
+
+<div class="card">
+<i class="fas fa-user"></i>
+<h3>حساب کاربری</h3>
+<p>پروفایل، امنیت، مدیریت دستگاه ها</p>
+</div>
+
+<div class="card">
+<i class="fas fa-book"></i>
+<h3>کتابخانه</h3>
+<p>انتشار، مطالعه و فروش کتاب</p>
+</div>
+
+<div class="card">
+<i class="fas fa-wallet"></i>
+<h3>کیف پول TON</h3>
+<p>واریز، برداشت و پرداخت</p>
+</div>
+
+<div class="card">
+<i class="fas fa-bullhorn"></i>
+<h3>تبلیغات</h3>
+<p>تبلیغات هوشمند و آمار کامل</p>
+</div>
+
+<div class="card">
+<i class="fas fa-robot"></i>
+<h3>هوش مصنوعی</h3>
+<p>چت، خلاصه سازی و تولید محتوا</p>
+</div>
+
+<div class="card">
+<i class="fas fa-users"></i>
+<h3>جامعه</h3>
+<p>گروه، کانال و پیام رسان</p>
+</div>
+
+</div>
+
+</section>
+
+<section class="books">
+
+<h2 class="section-title">
+کتاب های محبوب
+</h2>
+
+<div class="book-list">
+
+<div class="book">کتاب شماره 1</div>
+<div class="book">کتاب شماره 2</div>
+<div class="book">کتاب شماره 3</div>
+<div class="book">کتاب شماره 4</div>
+
+</div>
+
+</section>
+
+<section class="ai">
+
+<h2 class="section-title">
+🤖 دستیار هوش مصنوعی
+</h2>
+
+<p>
+پاسخ به سوالات، خلاصه کتاب، تولید محتوا و پیشنهاد هوشمند
+</p>
+
+</section>
+
+<section class="roadmap">
+
+<h2 class="section-title">
+نقشه راه
+</h2>
+
+<div class="phase">
+<h3>فاز 1</h3>
+<p>حساب کاربری، کتابخانه، کیف پول</p>
+</div>
+
+<div class="phase">
+<h3>فاز 2</h3>
+<p>تبلیغات، اخبار، هوش مصنوعی</p>
+</div>
+
+<div class="phase">
+<h3>فاز 3</h3>
+<p>جامعه، پیام رسان، اپلیکیشن موبایل</p>
+</div>
+
+</section>
+
+<section class="faq">
+
+<h2 class="section-title">
+سوالات متداول
+</h2>
+
+<div class="faq-item">
+آیا JAHCORE رایگان است؟ بله، بخش زیادی رایگان خواهد بود.
+</div>
+
+<div class="faq-item">
+آیا درآمدزایی دارد؟ بله، از کتاب و محتوا.
+</div>
+
+<div class="faq-item">
+آیا امن است؟ بله، با سیستم های امنیتی چندلایه.
+</div>
+
+</section>
+
+<footer>
+
+<h2>⚡ JAHCORE</h2>
+
+<p>
+پلتفرم مستقل • امن • کاربر محور
+</p>
+
+<br>
+
+<p>
+© 2026 JAHCORE
+</p>
+
+</footer>
 
 </body>
-    </html>
+  </html>
