@@ -1,68 +1,240 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAHCORE Dashboard Pro</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<style>
+body{
+margin:0;
+font-family:tahoma;
+background:#0b0f19;
+color:white;
+display:flex;
+}
+
+/* SIDEBAR */
+.sidebar{
+width:270px;
+height:100vh;
+background:#0f172a;
+position:fixed;
+right:0;
+top:0;
+padding:20px;
+border-left:1px solid #1f2937;
+}
+
+.logo{
+font-size:26px;
+font-weight:bold;
+margin-bottom:25px;
+}
+
+.menu a{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px;
+margin:8px 0;
+text-decoration:none;
+color:white;
+background:#111827;
+border-radius:10px;
+transition:0.2s;
+}
+
+.menu a:hover{
+background:#2563eb;
+}
+
+/* MAIN */
+.main{
+margin-right:270px;
+padding:25px;
+width:100%;
+}
+
+/* HEADER */
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+.welcome{
+font-size:22px;
+font-weight:bold;
+}
+
+/* CARDS */
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+}
+
+.card{
+background:#111827;
+padding:18px;
+border-radius:14px;
+}
+
+.card h2{
+margin:0;
+color:#60a5fa;
+}
+
+/* SECTION */
+.section{
+margin-top:30px;
+}
+
+.box{
+background:#111827;
+padding:18px;
+border-radius:14px;
+margin-top:10px;
+}
+
+/* EMPTY STATE */
+.empty{
+text-align:center;
+color:#9ca3af;
+padding:20px;
+}
+
+button{
+background:#ef4444;
+color:white;
+padding:8px 12px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+<div class="logo">⚡ JAHCORE</div>
+
+<div class="menu">
+<a href="#"><i class="fas fa-home"></i> خانه</a>
+<a href="library.html"><i class="fas fa-book"></i> کتابخانه</a>
+<a href="wallet.html"><i class="fas fa-wallet"></i> کیف پول</a>
+<a href="ai.html"><i class="fas fa-robot"></i> هوش مصنوعی</a>
+<a href="#"><i class="fas fa-bullhorn"></i> تبلیغات</a>
+<a href="#"><i class="fas fa-newspaper"></i> اخبار</a>
+<a href="#" onclick="logout()"><i class="fas fa-sign-out"></i> خروج</a>
+</div>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<div class="topbar">
+<div class="welcome" id="welcome">در حال بارگذاری...</div>
+</div>
+
+<!-- CARDS -->
+<div class="cards">
+
+<div class="card">
+<h2 id="books">0</h2>
+<p>کتاب‌ها</p>
+</div>
+
+<div class="card">
+<h2 id="balance">0$</h2>
+<p>کیف پول</p>
+</div>
+
+<div class="card">
+<h2>VIP</h2>
+<p>وضعیت حساب</p>
+</div>
+
+<div class="card">
+<h2>0</h2>
+<p>دنبال‌کننده</p>
+</div>
+
+</div>
+
+<!-- LIBRARY -->
+<div class="section">
+<h3>📚 کتابخانه من</h3>
+
+<div class="box" id="library">
+در حال بارگذاری...
+</div>
+
+</div>
+
+</div>
+
 <script type="module">
 
 import { auth, db } from "./firebase.js";
-import { 
-onAuthStateChanged, 
-signOut 
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-import { 
-doc, 
-getDoc 
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-import {
-collection,
-query,
-where,
-getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-/* USER + DATA LOAD */
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, async (user)=>{
 
 if(!user){
 window.location.href="login.html";
 return;
 }
 
-/* USER INFO */
 let snap = await getDoc(doc(db,"users",user.uid));
-let data = snap.data();
+let data = snap.data() || {};
 
+/* USER */
 document.getElementById("welcome").innerText =
-"خوش آمدی " + data.username;
+"سلام " + (data.username || "کاربر");
 
+/* WALLET */
 document.getElementById("balance").innerText =
 (data.wallet || 0) + "$";
 
-document.getElementById("walletBalance").innerText =
-(data.wallet || 0) + " USD";
-
-/* BOOK COUNT REAL */
+/* BOOKS */
 let q = query(collection(db,"books"), where("uid","==",user.uid));
 let booksSnap = await getDocs(q);
 
 document.getElementById("books").innerText =
 booksSnap.size;
 
-/* BOOK LIST REAL */
+/* LIBRARY */
 let html = "";
 
 if(booksSnap.empty){
-html = "هنوز کتابی ندارید";
-} else {
+html = `<div class="empty">
+📭 هنوز کتابی نداری<br><br>
+<a href="library.html" style="color:#60a5fa">افزودن کتاب</a>
+</div>`;
+}else{
 
 booksSnap.forEach((d)=>{
 let b = d.data();
 
 html += `
-<div style="background:#1f2937;padding:15px;border-radius:12px;margin-bottom:10px">
-<h3>${b.title}</h3>
-<p>${b.author}</p>
-
-<a href="${b.url}" target="_blank"
-style="color:#60a5fa">📖 خواندن</a>
+<div style="background:#1f2937;padding:12px;border-radius:10px;margin-bottom:10px">
+<b>${b.title}</b><br>
+<small>${b.author}</small><br>
+<a href="reader.html?id=${d.id}" style="color:#60a5fa">
+📖 مطالعه
+</a>
 </div>
 `;
 });
@@ -78,4 +250,7 @@ await signOut(auth);
 window.location.href="login.html";
 }
 
-  </script>
+</script>
+
+</body>
+  </html>
