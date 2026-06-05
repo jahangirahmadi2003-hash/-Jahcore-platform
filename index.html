@@ -3,116 +3,102 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JAHCORE - پلتفرم چندمنظوره جهانی</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>JAHCORE - پلتفرم آینده</title>
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <style>
-    body { font-family: system-ui, sans-serif; }
-    .hero-bg {
-      background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
-    }
-    .card-hover:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3);
-    }
-  </style>
 </head>
-<body class="bg-gray-950 text-white">
+<body>
 
   <!-- Header -->
-  <header class="border-b border-gray-800 bg-black/80 backdrop-blur-md fixed w-full z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+  <header>
+    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <span class="text-4xl">⚡</span>
-        <h1 class="text-3xl font-bold tracking-tight">JAHCORE</h1>
+        <h1 class="text-3xl font-bold tracking-tighter">JAHCORE</h1>
       </div>
-      <nav class="flex gap-6 text-lg">
-        <a href="index.html" class="hover:text-blue-400">خانه</a>
-        <a href="library.html" class="hover:text-blue-400">کتابخانه</a>
-        <a href="wallet.html" class="hover:text-blue-400">کیف پول</a>
-        <a href="#" class="hover:text-blue-400">اخبار</a>
-        <a href="#" class="hover:text-blue-400">تبلیغات</a>
+      <nav class="hidden md:flex items-center gap-8 text-lg">
+        <a href="index.html" class="hover:text-blue-400 transition">خانه</a>
+        <a href="library.html" class="hover:text-blue-400 transition">کتابخانه</a>
+        <a href="wallet.html" class="hover:text-blue-400 transition">کیف پول</a>
+        <a href="#" class="hover:text-blue-400 transition">اخبار</a>
+        <a href="#" class="hover:text-blue-400 transition">تبلیغات</a>
       </nav>
-      <div>
-        <button onclick="alert('ورود / ثبت‌نام به زودی فعال می‌شود')" class="bg-blue-600 hover:bg-blue-700 px-6 py-2.5 rounded-xl font-medium">
-          ورود / ثبت‌نام
-        </button>
-      </div>
+      <button onclick="alert('ورود به حساب کاربری')" 
+              class="bg-white text-black px-7 py-3 rounded-2xl font-semibold hover:bg-gray-200 transition btn">
+        ورود / ثبت‌نام
+      </button>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero-bg min-h-screen flex items-center pt-20">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-      <h2 class="text-6xl font-bold mb-6">پلتفرم همه‌چیز در یک جا</h2>
-      <p class="text-2xl text-gray-300 mb-10">کتاب • کیف پول TON • تبلیغات • هوش مصنوعی • اخبار • فروشگاه</p>
-      <div class="flex gap-4 justify-center">
-        <a href="wallet.html" class="bg-yellow-400 text-black px-10 py-4 rounded-2xl text-xl font-bold hover:bg-yellow-300">💰 ورود به کیف پول</a>
-        <a href="library.html" class="bg-white text-black px-10 py-4 rounded-2xl text-xl font-bold hover:bg-gray-200">📚 کتابخانه</a>
+  <!-- Hero -->
+  <section class="hero text-center">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-6xl md:text-7xl font-bold leading-tight mb-6">
+        آینده را همین امروز بساز
+      </h2>
+      <p class="text-2xl text-gray-300 max-w-3xl mx-auto mb-12">
+        پلتفرم یکپارچه برای کتاب، کیف پول TON، تبلیغات هوشمند، هوش مصنوعی و کسب درآمد
+      </p>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a href="wallet.html" class="bg-yellow-400 hover:bg-yellow-300 text-black px-10 py-5 rounded-3xl text-xl font-bold flex items-center gap-3 btn">
+          <i class="fas fa-wallet"></i> ورود به کیف پول TON
+        </a>
+        <a href="library.html" class="bg-white/10 hover:bg-white/20 border border-white/30 px-10 py-5 rounded-3xl text-xl font-bold flex items-center gap-3 btn">
+          <i class="fas fa-book"></i> کتابخانه دیجیتال
+        </a>
       </div>
     </div>
   </section>
 
   <!-- Features -->
-  <section class="py-20 bg-gray-900">
+  <section class="py-24">
     <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-4xl font-bold text-center mb-16">قابلیت‌های JAHCORE</h2>
-
+      <h2 class="text-4xl font-bold text-center mb-16">همه چیز در JAHCORE</h2>
+      
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-        <!-- کیف پول -->
-        <div class="card-hover bg-gray-800 p-8 rounded-3xl">
-          <div class="text-5xl mb-4">💰</div>
+        <div class="glass feature-card">
+          <div class="text-6xl mb-6">💰</div>
           <h3 class="text-2xl font-bold mb-3">کیف پول TON مستقل</h3>
-          <p class="text-gray-400">Non-Custodial • Seed Phrase • واریز و برداشت • بدون واسطه</p>
-          <a href="wallet.html" class="block mt-6 text-blue-400 hover:text-blue-300">ورود به کیف پول →</a>
+          <p class="text-gray-400">کاملاً Non-Custodial • Seed Phrase • واریز و برداشت آزاد</p>
         </div>
 
-        <!-- کتابخانه -->
-        <div class="card-hover bg-gray-800 p-8 rounded-3xl">
-          <div class="text-5xl mb-4">📚</div>
-          <h3 class="text-2xl font-bold mb-3">کتابخانه دیجیتال</h3>
-          <p class="text-gray-400">هزاران کتاب • انتشار توسط کاربران • مطالعه آنلاین • پیشنهاد هوشمند</p>
-          <a href="library.html" class="block mt-6 text-blue-400 hover:text-blue-300">ورود به کتابخانه →</a>
+        <div class="glass feature-card">
+          <div class="text-6xl mb-6">📚</div>
+          <h3 class="text-2xl font-bold mb-3">کتابخانه هوشمند</h3>
+          <p class="text-gray-400">انتشار کتاب • مطالعه آنلاین • پیشنهاد هوشمند AI</p>
         </div>
 
-        <!-- تبلیغات -->
-        <div class="card-hover bg-gray-800 p-8 rounded-3xl">
-          <div class="text-5xl mb-4">📢</div>
-          <h3 class="text-2xl font-bold mb-3">سیستم تبلیغات</h3>
-          <p class="text-gray-400">تبلیغات هوشمند • Native • ویدیویی • پنل تبلیغ‌دهنده</p>
+        <div class="glass feature-card">
+          <div class="text-6xl mb-6">📢</div>
+          <h3 class="text-2xl font-bold mb-3">سیستم تبلیغات پیشرفته</h3>
+          <p class="text-gray-400">تبلیغات هوشمند • Native • ویدیویی • پنل کامل</p>
         </div>
 
-        <!-- هوش مصنوعی -->
-        <div class="card-hover bg-gray-800 p-8 rounded-3xl">
-          <div class="text-5xl mb-4">🤖</div>
+        <div class="glass feature-card">
+          <div class="text-6xl mb-6">🤖</div>
           <h3 class="text-2xl font-bold mb-3">هوش مصنوعی JAHCORE</h3>
-          <p class="text-gray-400">چت AI • خلاصه کتاب • تولید محتوا • پیشنهاد شخصی‌سازی شده</p>
+          <p class="text-gray-400">چت AI • خلاصه کتاب • تولید محتوا • تحلیل هوشمند</p>
         </div>
 
-        <!-- اخبار -->
-        <div class="card-hover bg-gray-800 p-8 rounded-3xl">
-          <div class="text-5xl mb-4">📰</div>
+        <div class="glass feature-card">
+          <div class="text-6xl mb-6">📰</div>
           <h3 class="text-2xl font-bold mb-3">اخبار و شبکه اجتماعی</h3>
-          <p class="text-gray-400">اخبار روز • پست‌گذاری • دنبال کردن • گروه و کانال</p>
+          <p class="text-gray-400">پست • گروه • کانال • دنبال کردن کاربران</p>
         </div>
 
-        <!-- درآمدزایی -->
-        <div class="card-hover bg-gray-800 p-8 rounded-3xl">
-          <div class="text-5xl mb-4">💵</div>
-          <h3 class="text-2xl font-bold mb-3">درآمدزایی</h3>
-          <p class="text-gray-400">فروش کتاب • کمیسیون تبلیغات • اشتراک VIP • همکاری در فروش</p>
+        <div class="glass feature-card">
+          <div class="text-6xl mb-6">💵</div>
+          <h3 class="text-2xl font-bold mb-3">درآمدزایی واقعی</h3>
+          <p class="text-gray-400">فروش کتاب • کمیسیون • اشتراک VIP</p>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-black py-12 text-center text-gray-500">
-    <p class="text-xl font-bold text-white mb-2">JAHCORE © 2026</p>
-    <p>پلتفرم مستقل • امن • کاربرمحور</p>
+  <footer class="bg-black py-12 text-center border-t border-gray-800">
+    <p class="text-2xl font-bold mb-2">JAHCORE</p>
+    <p class="text-gray-500">2026 © — پلتفرم مستقل برای آینده دیجیتال</p>
   </footer>
 
 </body>
-  </html>
+                                                                    </html>
