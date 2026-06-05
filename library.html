@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAHCORE Library</title>
+
+<style>
+body{
+margin:0;
+font-family:tahoma;
+background:#0b0f19;
+color:white;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+}
+
+input, button{
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:10px;
+border:none;
+}
+
+input{
+background:#111827;
+color:white;
+}
+
+button{
+background:#2563eb;
+color:white;
+cursor:pointer;
+font-weight:bold;
+}
+
+.book{
+background:#111827;
+padding:15px;
+border-radius:15px;
+margin:10px 0;
+}
+
+.delete{
+background:#ef4444;
+padding:8px;
+border:none;
+border-radius:8px;
+color:white;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📚 کتابخانه JAHCORE</h1>
+
+<h3>افزودن کتاب</h3>
+
+<input id="title" placeholder="عنوان کتاب">
+<input id="author" placeholder="نویسنده">
+<input id="url" placeholder="لینک کتاب / PDF">
+
+<button onclick="addBook()">افزودن کتاب</button>
+
+<hr>
+
+<h3>کتاب‌های موجود</h3>
+<div id="list">در حال بارگذاری...</div>
+
+</div>
+
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+import {
+collection,
+addDoc,
+getDocs,
+deleteDoc,
+doc,
+query,
+where,
+serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+let currentUser;
+
+/* CHECK USER */
+onAuthStateChanged(auth,(user)=>{
+if(!user){
+window.location.href="login.html";
+return;
+}
+currentUser=user;
+loadBooks();
+});
+
+/* ADD BOOK */
+window.addBook = async function(){
+
+let title=document.getElementById("title").value;
+let author=document.getElementById("author").value;
+let url=document.getElementById("url").value;
+
+if(!title || !author) return alert("پر کن");
+
+await addDoc(collection(db,"books"),{
+title,
+author,
+url,
+uid:currentUser.uid,
+createdAt:serverTimestamp()
+});
+
+alert("کتاب اضافه شد");
+loadBooks();
+}
+
+/* LOAD BOOKS */
+async function loadBooks(){
+
+let q=query(collection(db,"books"),where("uid","==",currentUser.uid));
+let snap=await getDocs(q);
+
+let html="";
+
+snap.forEach((d)=>{
+let book=d.data();
+
+html+=`
+<div class="book">
+<h3>${book.title}</h3>
+<p>${book.author}</p>
+<a href="${book.url}" target="_blank">مشاهده</a>
+<br><br>
+<button class="delete" onclick="del('${d.id}')">حذف</button>
+</div>
+`;
+});
+
+document.getElementById("list").innerHTML=
+html || "هیچ کتابی ندارید";
+}
+
+/* DELETE BOOK */
+window.del = async function(id){
+await deleteDoc(doc(db,"books",id));
+loadBooks();
+}
+
+</script>
+
+</body>
+</html>
