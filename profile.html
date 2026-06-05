@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAHCORE Profile</title>
+
+<style>
+body{
+margin:0;
+font-family:tahoma;
+background:#0b0f19;
+color:white;
+padding:20px;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+}
+
+.card{
+background:#111827;
+padding:20px;
+border-radius:15px;
+margin-bottom:15px;
+}
+
+input, textarea{
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:10px;
+border:none;
+background:#1f2937;
+color:white;
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#2563eb;
+color:white;
+cursor:pointer;
+font-weight:bold;
+}
+
+.small{
+color:#9ca3af;
+font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👤 پروفایل کاربر</h1>
+
+<div class="card">
+
+<p class="small">نام کاربری</p>
+<input id="username">
+
+<p class="small">بیو (Bio)</p>
+<textarea id="bio"></textarea>
+
+<p class="small">کشور</p>
+<input id="country">
+
+<button onclick="saveProfile()">ذخیره تغییرات</button>
+
+</div>
+
+<div class="card">
+
+<h3>📊 اطلاعات حساب</h3>
+
+<p>ایمیل: <span id="email"></span></p>
+<p>کیف پول: <span id="wallet"></span>$</p>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+import {
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+import {
+doc,
+getDoc,
+updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+let uid;
+
+/* LOAD USER */
+onAuthStateChanged(auth, async (user)=>{
+
+if(!user){
+window.location.href="login.html";
+return;
+}
+
+uid = user.uid;
+
+let snap = await getDoc(doc(db,"users",uid));
+let data = snap.data();
+
+/* FILL INPUTS */
+document.getElementById("username").value = data.username || "";
+document.getElementById("bio").value = data.bio || "";
+document.getElementById("country").value = data.country || "";
+
+document.getElementById("email").innerText = data.email;
+document.getElementById("wallet").innerText = data.wallet || 0;
+
+});
+
+/* SAVE PROFILE */
+window.saveProfile = async function(){
+
+let username = document.getElementById("username").value;
+let bio = document.getElementById("bio").value;
+let country = document.getElementById("country").value;
+
+await updateDoc(doc(db,"users",uid),{
+username,
+bio,
+country
+});
+
+alert("پروفایل ذخیره شد");
+}
+
+</script>
+
+</body>
+  </html>
