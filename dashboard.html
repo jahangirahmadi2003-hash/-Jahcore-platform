@@ -1,215 +1,75 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JAHCORE Dashboard</title>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-<style>
-body{
-margin:0;
-font-family:tahoma;
-background:#0b0f19;
-color:white;
-display:flex;
-}
-
-/* SIDEBAR */
-.sidebar{
-width:260px;
-background:#111827;
-height:100vh;
-padding:20px;
-position:fixed;
-right:0;
-top:0;
-}
-
-.logo{
-font-size:28px;
-font-weight:bold;
-margin-bottom:30px;
-}
-
-.menu a{
-display:block;
-color:white;
-text-decoration:none;
-padding:12px;
-margin:8px 0;
-border-radius:10px;
-background:#1f2937;
-}
-
-.menu a:hover{
-background:#2563eb;
-}
-
-/* MAIN */
-.main{
-margin-right:260px;
-padding:30px;
-width:100%;
-}
-
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:30px;
-}
-
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-}
-
-.card{
-background:#111827;
-padding:20px;
-border-radius:15px;
-}
-
-.card h2{
-margin:0;
-color:#60a5fa;
-}
-
-/* SECTIONS */
-.section{
-margin-top:40px;
-}
-
-.list{
-background:#111827;
-padding:20px;
-border-radius:15px;
-margin-top:10px;
-}
-
-button{
-padding:10px 15px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-background:#ef4444;
-color:white;
-}
-
-.wallet{
-background:linear-gradient(135deg,#2563eb,#1e3a8a);
-padding:25px;
-border-radius:20px;
-}
-
-</style>
-</head>
-
-<body>
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-<div class="logo">⚡ JAHCORE</div>
-
-<div class="menu">
-<a href="#"><i class="fas fa-home"></i> خانه</a>
-<a href="#"><i class="fas fa-book"></i> کتابخانه</a>
-<a href="#"><i class="fas fa-wallet"></i> کیف پول</a>
-<a href="#"><i class="fas fa-robot"></i> هوش مصنوعی</a>
-<a href="#"><i class="fas fa-bullhorn"></i> تبلیغات</a>
-<a href="#"><i class="fas fa-newspaper"></i> اخبار</a>
-<a href="#" onclick="logout()">خروج</a>
-</div>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-<div class="topbar">
-<h2 id="welcome">خوش آمدی</h2>
-</div>
-
-<!-- CARDS -->
-<div class="cards">
-
-<div class="card">
-<h2 id="books">0</h2>
-<p>کتاب‌های من</p>
-</div>
-
-<div class="card">
-<h2 id="balance">0$</h2>
-<p>کیف پول</p>
-</div>
-
-<div class="card">
-<h2>VIP</h2>
-<p>وضعیت حساب</p>
-</div>
-
-<div class="card">
-<h2>0</h2>
-<p>دنبال‌کننده‌ها</p>
-</div>
-
-</div>
-
-<!-- WALLET -->
-<div class="section">
-<h3>💰 کیف پول</h3>
-<div class="wallet">
-<p>موجودی فعلی شما:</p>
-<h1 id="walletBalance">0 USD</h1>
-</div>
-</div>
-
-<!-- LIBRARY -->
-<div class="section">
-<h3>📚 کتابخانه من</h3>
-<div class="list" id="library">
-در حال بارگذاری...
-</div>
-</div>
-
-</div>
-
 <script type="module">
 
 import { auth, db } from "./firebase.js";
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import { 
+onAuthStateChanged, 
+signOut 
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
-/* USER LOAD */
+import { 
+doc, 
+getDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+import {
+collection,
+query,
+where,
+getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+/* USER + DATA LOAD */
 onAuthStateChanged(auth, async (user) => {
+
 if(!user){
 window.location.href="login.html";
 return;
 }
 
+/* USER INFO */
 let snap = await getDoc(doc(db,"users",user.uid));
-
 let data = snap.data();
 
 document.getElementById("welcome").innerText =
 "خوش آمدی " + data.username;
 
 document.getElementById("balance").innerText =
-data.wallet + "$";
+(data.wallet || 0) + "$";
 
 document.getElementById("walletBalance").innerText =
-data.wallet + " USD";
+(data.wallet || 0) + " USD";
+
+/* BOOK COUNT REAL */
+let q = query(collection(db,"books"), where("uid","==",user.uid));
+let booksSnap = await getDocs(q);
 
 document.getElementById("books").innerText =
-data.books || 0;
+booksSnap.size;
 
-/* LIBRARY SAMPLE */
-document.getElementById("library").innerHTML =
-data.books > 0
-? "کتاب‌های شما در اینجا نمایش داده می‌شود"
-: "هنوز کتابی ندارید";
+/* BOOK LIST REAL */
+let html = "";
+
+if(booksSnap.empty){
+html = "هنوز کتابی ندارید";
+} else {
+
+booksSnap.forEach((d)=>{
+let b = d.data();
+
+html += `
+<div style="background:#1f2937;padding:15px;border-radius:12px;margin-bottom:10px">
+<h3>${b.title}</h3>
+<p>${b.author}</p>
+
+<a href="${b.url}" target="_blank"
+style="color:#60a5fa">📖 خواندن</a>
+</div>
+`;
+});
+}
+
+document.getElementById("library").innerHTML = html;
+
 });
 
 /* LOGOUT */
@@ -218,7 +78,4 @@ await signOut(auth);
 window.location.href="login.html";
 }
 
-</script>
-
-</body>
-  </html>
+  </script>
