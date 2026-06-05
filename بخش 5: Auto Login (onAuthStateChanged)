@@ -1,9 +1,0 @@
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    console.log("User logged in:", user.email);
-    loadUser();   // صفحه را دوباره رندر می‌کند
-  } else {
-    console.log("No user logged in");
-    loadUser();   // حالت logout
-  }
-});
