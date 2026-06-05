@@ -11,18 +11,30 @@ margin:0;
 font-family:tahoma;
 background:#0b0f19;
 color:white;
+transition:0.3s;
 }
 
 .topbar{
 position:fixed;
 top:0;
-width:100%;
+right:0;
+left:0;
 background:#111827;
 padding:15px;
 display:flex;
 justify-content:space-between;
 align-items:center;
 z-index:10;
+}
+
+.controls button{
+margin:0 5px;
+padding:8px 12px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#2563eb;
+color:white;
 }
 
 .container{
@@ -33,21 +45,20 @@ line-height:2;
 font-size:18px;
 }
 
-button{
-padding:8px 15px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-background:#2563eb;
-color:white;
-}
-
-.dark{
+/* DARK / LIGHT */
+.light{
 background:#f1f5f9;
 color:black;
 }
-</style>
 
+.light .topbar{
+background:#e2e8f0;
+}
+
+.light .controls button{
+background:#1e3a8a;
+}
+</style>
 </head>
 
 <body>
@@ -55,9 +66,11 @@ color:black;
 <div class="topbar">
 <div id="title">📖 کتاب</div>
 
-<div>
-<button onclick="toggleMode()">🌙 حالت</button>
-<button onclick="goBack()">⬅ برگشت</button>
+<div class="controls">
+<button onclick="fontUp()">A+</button>
+<button onclick="fontDown()">A-</button>
+<button onclick="toggleTheme()">🌙</button>
+<button onclick="goBack()">⬅</button>
 </div>
 </div>
 
@@ -70,9 +83,10 @@ color:black;
 import { db } from "./firebase.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-/* GET BOOK ID */
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
+
+let fontSize = 18;
 
 /* LOAD BOOK */
 async function loadBook(){
@@ -80,7 +94,7 @@ async function loadBook(){
 let snap = await getDoc(doc(db,"books",id));
 
 if(!snap.exists()){
-document.getElementById("content").innerText = "کتاب پیدا نشد";
+document.getElementById("content").innerText="کتاب پیدا نشد";
 return;
 }
 
@@ -88,21 +102,50 @@ let book = snap.data();
 
 document.getElementById("title").innerText = book.title;
 
+let saved = localStorage.getItem("read_"+id);
+
 document.getElementById("content").innerText =
-book.url || "محتوای کتاب موجود نیست (فعلاً فقط متن/لینک)";
+book.url || "محتوای کتاب موجود نیست";
+
+if(saved){
+document.getElementById("content").innerText = saved;
+}
 }
 
 loadBook();
 
-/* BACK */
-window.goBack = function(){
-window.history.back();
+/* FONT CONTROL */
+window.fontUp = function(){
+fontSize += 2;
+document.getElementById("content").style.fontSize = fontSize+"px";
+saveProgress();
 }
 
-/* DARK MODE */
-window.toggleMode = function(){
-document.body.classList.toggle("dark");
+window.fontDown = function(){
+fontSize -= 2;
+document.getElementById("content").style.fontSize = fontSize+"px";
+saveProgress();
 }
+
+/* THEME */
+window.toggleTheme = function(){
+document.body.classList.toggle("light");
+}
+
+/* BACK */
+window.goBack = function(){
+history.back();
+}
+
+/* SAVE READING */
+function saveProgress(){
+localStorage.setItem(
+"read_"+id,
+document.getElementById("content").innerText
+);
+}
+
+setInterval(saveProgress,5000);
 
 </script>
 
