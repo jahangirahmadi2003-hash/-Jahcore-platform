@@ -1,0 +1,386 @@
+import { useState } from "react";
+
+const books = [
+  { id: 1, title: "هوش مصنوعی و آینده", author: "علی رضایی", cover: "📘", views: 142000, category: "فناوری", trending: true },
+  { id: 2, title: "اقتصاد رفتاری", author: "سارا محمدی", cover: "📙", views: 98000, category: "اقتصاد", trending: true },
+  { id: 3, title: "ذهن آگاهی", author: "مریم احمدی", cover: "📗", views: 76000, category: "روان‌شناسی", trending: false },
+  { id: 4, title: "کد نویسی برای همه", author: "حسین کریمی", cover: "📕", views: 210000, category: "برنامه‌نویسی", trending: true },
+  { id: 5, title: "تاریخ ایران باستان", author: "فاطمه نوری", cover: "📒", views: 55000, category: "تاریخ", trending: false },
+  { id: 6, title: "فیزیک کوانتوم", author: "رضا شریفی", cover: "📓", views: 88000, category: "علوم", trending: false },
+];
+
+const categories = ["همه", "فناوری", "اقتصاد", "روان‌شناسی", "برنامه‌نویسی", "تاریخ", "علوم"];
+
+export default function WAIOHome() {
+  const [activeTab, setActiveTab] = useState("home");
+  const [activeCategory, setActiveCategory] = useState("همه");
+  const [walletOpen, setWalletOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filtered = books.filter(b =>
+    (activeCategory === "همه" || b.category === activeCategory) &&
+    (b.title.includes(searchQuery) || b.author.includes(searchQuery))
+  );
+
+  const trending = books.filter(b => b.trending).sort((a, b) => b.views - a.views);
+
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: "#0a0a0f",
+      color: "#e8e0d5",
+      fontFamily: "'Vazirmatn', 'Tahoma', sans-serif",
+      direction: "rtl",
+      position: "relative",
+      overflow: "hidden"
+    }}>
+      {/* Background glow */}
+      <div style={{
+        position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+        background: "radial-gradient(ellipse at 20% 20%, rgba(255,140,0,0.06) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(0,180,255,0.05) 0%, transparent 60%)",
+        pointerEvents: "none", zIndex: 0
+      }} />
+
+      {/* Header */}
+      <header style={{
+        position: "sticky", top: 0, zIndex: 100,
+        background: "rgba(10,10,15,0.92)",
+        backdropFilter: "blur(20px)",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        padding: "0 20px",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        height: "60px"
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <span style={{ fontSize: "22px", fontWeight: "900", letterSpacing: "-1px" }}>
+            <span style={{ color: "#ff8c00" }}>WA</span>
+            <span style={{ color: "#e8e0d5", opacity: 0.5 }}>.IO</span>
+          </span>
+        </div>
+
+        {/* Search */}
+        <div style={{
+          flex: 1, maxWidth: "320px", margin: "0 20px",
+          background: "rgba(255,255,255,0.05)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: "12px",
+          display: "flex", alignItems: "center", padding: "0 12px", gap: "8px"
+        }}>
+          <span style={{ opacity: 0.4, fontSize: "14px" }}>🔍</span>
+          <input
+            placeholder="جستجو..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            style={{
+              background: "none", border: "none", outline: "none",
+              color: "#e8e0d5", fontSize: "13px", width: "100%",
+              textAlign: "right", direction: "rtl"
+            }}
+          />
+        </div>
+
+        {/* Wallet button */}
+        <button
+          onClick={() => setWalletOpen(!walletOpen)}
+          style={{
+            background: walletOpen ? "rgba(255,140,0,0.2)" : "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,140,0,0.3)",
+            borderRadius: "10px", padding: "6px 14px",
+            color: "#ff8c00", cursor: "pointer",
+            fontSize: "13px", fontWeight: "600",
+            display: "flex", alignItems: "center", gap: "6px",
+            transition: "all 0.2s"
+          }}
+        >
+          👛 کیف پول
+        </button>
+      </header>
+
+      {/* Wallet Dropdown */}
+      {walletOpen && (
+        <div style={{
+          position: "fixed", top: "68px", left: "20px", right: "20px",
+          background: "#13131a",
+          border: "1px solid rgba(255,140,0,0.2)",
+          borderRadius: "16px", padding: "20px", zIndex: 200,
+          boxShadow: "0 20px 60px rgba(0,0,0,0.5)"
+        }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+            <span style={{ fontWeight: "700", fontSize: "16px" }}>👛 کیف پول من</span>
+            <button onClick={() => setWalletOpen(false)} style={{ background: "none", border: "none", color: "#888", cursor: "pointer", fontSize: "18px" }}>✕</button>
+          </div>
+          <div style={{
+            background: "linear-gradient(135deg, #ff8c00, #ff4500)",
+            borderRadius: "12px", padding: "20px", marginBottom: "16px"
+          }}>
+            <div style={{ fontSize: "12px", opacity: 0.8, marginBottom: "6px" }}>موجودی</div>
+            <div style={{ fontSize: "28px", fontWeight: "900" }}>۱۲۵,۰۰۰ تومان</div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+            {["💳 شارژ", "💸 برداشت", "📤 انتقال", "📊 تاریخچه"].map(btn => (
+              <button key={btn} style={{
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: "10px", padding: "12px",
+                color: "#e8e0d5", cursor: "pointer", fontSize: "13px"
+              }}>{btn}</button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <main style={{ position: "relative", zIndex: 1, paddingBottom: "80px" }}>
+
+        {/* Hero Banner */}
+        {activeTab === "home" && (
+          <div style={{
+            margin: "20px 16px",
+            background: "linear-gradient(135deg, rgba(255,140,0,0.15), rgba(0,180,255,0.08))",
+            border: "1px solid rgba(255,140,0,0.2)",
+            borderRadius: "20px", padding: "24px",
+            position: "relative", overflow: "hidden"
+          }}>
+            <div style={{ position: "absolute", top: "-20px", left: "-20px", fontSize: "120px", opacity: 0.05 }}>📚</div>
+            <div style={{ fontSize: "11px", color: "#ff8c00", fontWeight: "700", marginBottom: "8px", letterSpacing: "2px" }}>
+              پلتفرم کتاب دیجیتال
+            </div>
+            <div style={{ fontSize: "22px", fontWeight: "900", marginBottom: "8px", lineHeight: 1.4 }}>
+              هزاران کتاب<br/>در دسترس شما 📚
+            </div>
+            <div style={{ fontSize: "13px", opacity: 0.6, marginBottom: "16px" }}>
+              بخوانید، بنویسید، درآمد کسب کنید
+            </div>
+            <button style={{
+              background: "linear-gradient(135deg, #ff8c00, #ff4500)",
+              border: "none", borderRadius: "10px",
+              padding: "10px 20px", color: "white",
+              fontWeight: "700", cursor: "pointer", fontSize: "13px"
+            }}>
+              شروع کنید ←
+            </button>
+          </div>
+        )}
+
+        {/* Trending Section */}
+        {(activeTab === "home" || activeTab === "trending") && (
+          <section style={{ padding: "0 16px", marginBottom: "24px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
+              <span style={{ fontSize: "18px" }}>🔥</span>
+              <span style={{ fontWeight: "800", fontSize: "16px" }}>پرطرفدار</span>
+            </div>
+            <div style={{ display: "flex", gap: "12px", overflowX: "auto", paddingBottom: "8px" }}>
+              {trending.map((book, i) => (
+                <div key={book.id} style={{
+                  minWidth: "140px",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  borderRadius: "14px", padding: "16px",
+                  cursor: "pointer", transition: "all 0.2s",
+                  flexShrink: 0
+                }}>
+                  <div style={{ fontSize: "36px", marginBottom: "10px", textAlign: "center" }}>{book.cover}</div>
+                  <div style={{ fontSize: "12px", fontWeight: "700", marginBottom: "4px", lineHeight: 1.4 }}>{book.title}</div>
+                  <div style={{ fontSize: "11px", opacity: 0.5, marginBottom: "8px" }}>{book.author}</div>
+                  <div style={{ fontSize: "10px", color: "#ff8c00" }}>
+                    👁 {(book.views / 1000).toFixed(0)}K بازدید
+                  </div>
+                  {i === 0 && (
+                    <div style={{
+                      marginTop: "6px", background: "rgba(255,140,0,0.2)",
+                      borderRadius: "6px", padding: "2px 6px",
+                      fontSize: "9px", color: "#ff8c00", textAlign: "center"
+                    }}>
+                      🔥 #۱ این هفته
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Library */}
+        {(activeTab === "home" || activeTab === "library") && (
+          <section style={{ padding: "0 16px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
+              <span style={{ fontSize: "18px" }}>📚</span>
+              <span style={{ fontWeight: "800", fontSize: "16px" }}>کتابخانه</span>
+            </div>
+
+            {/* Categories */}
+            <div style={{ display: "flex", gap: "8px", overflowX: "auto", paddingBottom: "12px", marginBottom: "16px" }}>
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  style={{
+                    whiteSpace: "nowrap",
+                    background: activeCategory === cat ? "#ff8c00" : "rgba(255,255,255,0.05)",
+                    border: `1px solid ${activeCategory === cat ? "#ff8c00" : "rgba(255,255,255,0.08)"}`,
+                    borderRadius: "20px", padding: "6px 14px",
+                    color: activeCategory === cat ? "white" : "#e8e0d5",
+                    cursor: "pointer", fontSize: "12px", fontWeight: "600",
+                    transition: "all 0.2s", flexShrink: 0
+                  }}
+                >{cat}</button>
+              ))}
+            </div>
+
+            {/* Book Grid */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+              {filtered.map(book => (
+                <div key={book.id} style={{
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  borderRadius: "14px", padding: "16px",
+                  cursor: "pointer", transition: "all 0.2s"
+                }}>
+                  <div style={{ fontSize: "40px", textAlign: "center", marginBottom: "12px" }}>{book.cover}</div>
+                  <div style={{ fontSize: "13px", fontWeight: "700", marginBottom: "4px", lineHeight: 1.4 }}>{book.title}</div>
+                  <div style={{ fontSize: "11px", opacity: 0.5, marginBottom: "10px" }}>{book.author}</div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{
+                      fontSize: "10px", background: "rgba(255,140,0,0.1)",
+                      color: "#ff8c00", borderRadius: "6px", padding: "2px 8px"
+                    }}>{book.category}</span>
+                    <span style={{ fontSize: "10px", opacity: 0.4 }}>👁 {(book.views / 1000).toFixed(0)}K</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Ads Tab */}
+        {activeTab === "ads" && (
+          <section style={{ padding: "16px" }}>
+            <div style={{ fontWeight: "800", fontSize: "18px", marginBottom: "20px" }}>📢 تبلیغات</div>
+            <div style={{
+              background: "linear-gradient(135deg, rgba(0,180,255,0.1), rgba(0,100,255,0.05))",
+              border: "1px solid rgba(0,180,255,0.2)",
+              borderRadius: "16px", padding: "24px", marginBottom: "16px", textAlign: "center"
+            }}>
+              <div style={{ fontSize: "32px", marginBottom: "12px" }}>🚀</div>
+              <div style={{ fontWeight: "800", fontSize: "18px", marginBottom: "8px" }}>کتاب خود را Boost کنید</div>
+              <div style={{ opacity: 0.6, fontSize: "13px", marginBottom: "16px" }}>
+                کتابتان در صدر لیست قرار می‌گیرد و بیشتر دیده می‌شود
+              </div>
+              <button style={{
+                background: "linear-gradient(135deg, #00b4ff, #0055ff)",
+                border: "none", borderRadius: "10px", padding: "12px 28px",
+                color: "white", fontWeight: "700", cursor: "pointer", fontSize: "14px"
+              }}>
+                تبلیغ ثبت کن
+              </button>
+            </div>
+            {[
+              { icon: "🥇", label: "پلن برنزی", price: "۲۹,۰۰۰", desc: "۳ روز در صدر لیست" },
+              { icon: "🥈", label: "پلن نقره‌ای", price: "۷۹,۰۰۰", desc: "۱۰ روز + نشان ویژه" },
+              { icon: "🥇", label: "پلن طلایی", price: "۱۹۹,۰۰۰", desc: "۱ ماه + بنر صفحه اصلی" },
+            ].map(plan => (
+              <div key={plan.label} style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.07)",
+                borderRadius: "12px", padding: "16px",
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+                marginBottom: "10px"
+              }}>
+                <div>
+                  <div style={{ fontWeight: "700", marginBottom: "4px" }}>{plan.icon} {plan.label}</div>
+                  <div style={{ fontSize: "12px", opacity: 0.5 }}>{plan.desc}</div>
+                </div>
+                <div style={{ textAlign: "left" }}>
+                  <div style={{ color: "#ff8c00", fontWeight: "800", fontSize: "15px" }}>{plan.price} ت</div>
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* Profile Tab */}
+        {activeTab === "profile" && (
+          <section style={{ padding: "16px" }}>
+            <div style={{
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.07)",
+              borderRadius: "16px", padding: "24px",
+              textAlign: "center", marginBottom: "16px"
+            }}>
+              <div style={{
+                width: "70px", height: "70px",
+                background: "linear-gradient(135deg, #ff8c00, #ff4500)",
+                borderRadius: "50%", margin: "0 auto 12px",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: "28px"
+              }}>👤</div>
+              <div style={{ fontWeight: "800", fontSize: "18px", marginBottom: "4px" }}>کاربر عزیز</div>
+              <div style={{ opacity: 0.5, fontSize: "13px", marginBottom: "16px" }}>user@wa.io</div>
+              <div style={{ display: "flex", justifyContent: "center", gap: "24px" }}>
+                {[["📚", "۱۲", "کتاب"], ["👁", "۴۵K", "بازدید"], ["💰", "۱۲۵K", "درآمد"]].map(([icon, val, label]) => (
+                  <div key={label} style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: "16px" }}>{icon}</div>
+                    <div style={{ fontWeight: "800", fontSize: "16px", color: "#ff8c00" }}>{val}</div>
+                    <div style={{ fontSize: "11px", opacity: 0.5 }}>{label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Referral */}
+            <div style={{
+              background: "rgba(255,140,0,0.08)",
+              border: "1px solid rgba(255,140,0,0.2)",
+              borderRadius: "12px", padding: "16px"
+            }}>
+              <div style={{ fontWeight: "700", marginBottom: "8px" }}>🎁 لینک دعوت شما</div>
+              <div style={{
+                background: "rgba(0,0,0,0.3)", borderRadius: "8px",
+                padding: "10px 12px", fontSize: "12px",
+                fontFamily: "monospace", color: "#ff8c00", direction: "ltr",
+                textAlign: "left"
+              }}>
+                wa.io/ref/user123
+              </div>
+              <div style={{ fontSize: "12px", opacity: 0.6, marginTop: "8px" }}>
+                به ازای هر دعوت ۵,۰۰۰ تومان پاداش بگیرید
+              </div>
+            </div>
+          </section>
+        )}
+      </main>
+
+      {/* Bottom Navigation */}
+      <nav style={{
+        position: "fixed", bottom: 0, left: 0, right: 0,
+        background: "rgba(10,10,15,0.96)",
+        backdropFilter: "blur(20px)",
+        borderTop: "1px solid rgba(255,255,255,0.06)",
+        display: "flex", justifyContent: "space-around",
+        padding: "10px 0 16px", zIndex: 100
+      }}>
+        {[
+          { id: "home", icon: "🏠", label: "خانه" },
+          { id: "library", icon: "📚", label: "کتابخانه" },
+          { id: "trending", icon: "🔥", label: "ترند" },
+          { id: "ads", icon: "📢", label: "تبلیغات" },
+          { id: "profile", icon: "👤", label: "پروفایل" },
+        ].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            style={{
+              background: "none", border: "none", cursor: "pointer",
+              display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
+              color: activeTab === tab.id ? "#ff8c00" : "rgba(255,255,255,0.4)",
+              transition: "all 0.2s",
+              transform: activeTab === tab.id ? "scale(1.1)" : "scale(1)"
+            }}
+          >
+            <span style={{ fontSize: "20px" }}>{tab.icon}</span>
+            <span style={{ fontSize: "10px", fontWeight: activeTab === tab.id ? "700" : "400" }}>{tab.label}</span>
+          </button>
+        ))}
+      </nav>
+    </div>
+  );
+}
